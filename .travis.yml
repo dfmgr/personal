@@ -1,0 +1,25 @@
+# For more information about the configurations used
+# in this file, please see the Travis CI documentation.
+# .travis.yml
+# https://docs.travis-ci.com
+
+sudo: enabled
+
+install:
+  - sudo bash -c "$(curl -LSs https://github.com/casjay-dotfiles/scripts/raw/master/install.sh)"
+  - pkmgr init
+  - sudo bash -c "$(curl -LSs https://github.com/casjay-dotfiles/scripts/raw/master/install.sh)"
+  - bash -c "$(curl -LSs https://github.com/casjay-dotfiles/personal/raw/master/install.sh)"
+  - ./install.sh
+
+matrix:
+  include:
+    - os: linux
+      dist: bionic
+      language: bash
+      sudo: enabled
+
+notifications:
+  email:
+    on_failure: never
+    on_success: never

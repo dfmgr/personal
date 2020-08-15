@@ -1,0 +1,11 @@
+# vim: filetype=neomuttrc
+set mbox_type=Maildir
+set mbox="~/.local/share/Maildir/local"
+set spoolfile="~/.local/share/Maildir/local"
+set folder="~/.local/share//Maildir/local"
+set mask="!^\\.[^.]"
+set record="+.Sent"
+set postponed="+.Drafts"
+
+source ~/.config/mutt/defaults.muttrc
+source ~/.config/mutt/colors.muttrc

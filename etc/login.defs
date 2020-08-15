@@ -1,0 +1,18 @@
+# *REQUIRED*
+#QMAIL_DIR          Maildir/
+#MAIL_FILE          Maildir/
+MAIL_DIR           Maildir/
+PASS_MAX_DAYS      99999
+PASS_MIN_DAYS      0
+PASS_MIN_LEN       8
+PASS_WARN_AGE      7
+UID_MIN            10000
+UID_MAX            50000
+GID_MIN            10000
+GID_MAX            50000
+CREATE_HOME        yes
+UMASK              077
+USERGROUPS_ENAB    yes
+ENCRYPT_METHOD     SHA512
+
+# vim:ts=4:sw=4

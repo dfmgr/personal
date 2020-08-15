@@ -1,0 +1,12 @@
+<?xml version='1.0' encoding='us-ascii'?>
+<opml version="1.0">
+  <head>
+    <title>castero feeds</title>
+  </head>
+  <body>
+    <outline text="feeds">
+      <outline type="rss" text="Windows Weekly (Video HI)" xmlUrl="http://feeds.twit.tv/ww_video_large.xml" />
+      <outline type="rss" text="Security Now (Video HI)" xmlUrl="http://feeds.twit.tv/sn_video_large.xml" />
+    </outline>
+  </body>
+</opml>

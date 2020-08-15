@@ -1,0 +1,83 @@
+<?xml version="1.0"?>
+<opml version="1.0">
+  <head>
+    <title>newsboat - Exported Feeds</title>
+  </head>
+  <body>
+    <outline type="rss" xmlUrl="------------------------" htmlUrl="" title=""/>
+    <outline type="rss" xmlUrl="-------NEWSFEEDS--------" htmlUrl="" title=""/>
+    <outline type="rss" xmlUrl="------------------------" htmlUrl="" title=""/>
+    <outline type="rss" xmlUrl="https://distrowatch.com/news/dw.xml" htmlUrl="" title="NEWSFEED: DistroWatch"/>
+    <outline type="rss" xmlUrl="http://lxer.com/module/newswire/headlines.rss" htmlUrl="" title="NEWSFEED: LXer"/>
+    <outline type="rss" xmlUrl="https://www.linux.com/feeds/news/rss" htmlUrl="" title="NEWSFEED: Linux.com"/>
+    <outline type="rss" xmlUrl="https://www.linuxjournal.com/news/feed" htmlUrl="" title="NEWSFEED: Linux Journal"/>
+    <outline type="rss" xmlUrl="https://www.networkworld.com/category/linux/index.rss" htmlUrl="" title="NEWSFEED: Network World (Linux)"/>
+    <outline type="rss" xmlUrl="https://www.computerworld.com/index.rss" htmlUrl="" title="NEWSFEED: Computer World"/>
+    <outline type="rss" xmlUrl="http://feeds.feedburner.com/d0od" htmlUrl="" title="NEWSFEED: OMG Ubuntu!"/>
+    <outline type="rss" xmlUrl="https://www.phoronix.com/rss.php" htmlUrl="" title="NEWSFEED: Phoronix"/>
+    <outline type="rss" xmlUrl="https://www.zdnet.com/topic/linux/rss.xml" htmlUrl="" title="NEWSFEED: ZDNet (Linux)"/>
+    <outline type="rss" xmlUrl="https://itsfoss.com/feed/" htmlUrl="" title="NEWSFEED: It's Foss"/>
+    <outline type="rss" xmlUrl="https://linux.softpedia.com/backend.xml" htmlUrl="" title="NEWSFEED: Softpedia (Linux)"/>
+    <outline type="rss" xmlUrl="https://opensource.com/feed" htmlUrl="" title="NEWSFEED: Opensource.com"/>
+    <outline type="rss" xmlUrl="https://betanews.com/feed/" htmlUrl="" title="NEWSFEED: Beta News"/>
+    <outline type="rss" xmlUrl="http://feeds.feedburner.com/fossbytes" htmlUrl="" title="NEWSFEED: FossBytes"/>
+    <outline type="rss" xmlUrl="https://www.techrepublic.com/rssfeeds/topic/open-source/" htmlUrl="" title="NEWSFEED: Tech Republic (Open Source)"/>
+    <outline type="rss" xmlUrl="https://www.theinquirer.net/feeds/rss/tag/open-source" htmlUrl="" title="NEWSFEED: The Inquirer (Open Source)"/>
+    <outline type="rss" xmlUrl="http://feeds.arstechnica.com/arstechnica/open-source" htmlUrl="" title="NEWSFEED: ArsTechnica (Open Source)"/>
+    <outline type="rss" xmlUrl="https://www.linuxinsider.com/perl/syndication/rssfull.pl" htmlUrl="" title="NEWSFEED: Linux Insider"/>
+    <outline type="rss" xmlUrl="https://hackaday.com/blog/feed/" htmlUrl="" title="NEWSFEED: Hackaday"/>
+    <outline type="rss" xmlUrl="https://www.gamingonlinux.com/article_rss.php" htmlUrl="" title="NEWSFEED: Gaming On Linux"/>
+    <outline type="rss" xmlUrl="https://xkcd.com/rss.xml" htmlUrl="" title="NEWSFEED: xkcd webcomic "/>
+    <outline type="rss" xmlUrl="-------------------------" htmlUrl="" title=""/>
+    <outline type="rss" xmlUrl="-------YOUTUBE-----------" htmlUrl="" title=""/>
+    <outline type="rss" xmlUrl="-------------------------" htmlUrl="" title=""/>
+    <outline type="rss" xmlUrl="https://www.youtube.com/feeds/videos.xml?channel_id=UCVls1GmFKf6WlTraIb_IaJg" htmlUrl="" title="YOUTUBE: DistroTube"/>
+    <outline type="rss" xmlUrl="https://www.youtube.com/feeds/videos.xml?channel_id=UCwY9B5_8QDGP8niZhBtTh8w" htmlUrl="" title="YOUTUBE: TWiT Netcast"/>
+    <outline type="rss" xmlUrl="https://www.youtube.com/feeds/videos.xml?channel_id=UCHugE6eRhqB9_AZQh4DDbIw" htmlUrl="" title="YOUTUBE: Jupiter Broadcasting"/>
+    <outline type="rss" xmlUrl="https://www.youtube.com/feeds/videos.xml?channel_id=UCkK9UDm_ZNrq_rIXCz3xCGA" htmlUrl="" title="YOUTUBE: Bryan Lunduke"/>
+    <outline type="rss" xmlUrl="https://www.youtube.com/feeds/videos.xml?channel_id=UC2eYFnH61tmytImy1mTYvhA" htmlUrl="" title="YOUTUBE: Luke Smith"/>
+    <outline type="rss" xmlUrl="https://www.youtube.com/feeds/videos.xml?channel_id=UCbHXJGd7c8Hy4z0-YX1Jf3Q" htmlUrl="" title="YOUTUBE: Matt Hartley"/>
+    <outline type="rss" xmlUrl="https://www.youtube.com/feeds/videos.xml?channel_id=UCWJUSpXVHTaHErtGWC5qPlQ" htmlUrl="" title="YOUTUBE: Destination Linux"/>
+    <outline type="rss" xmlUrl="https://www.youtube.com/feeds/videos.xml?channel_id=UC4w1YQAJMWOz4qtxinq55LQ" htmlUrl="" title="YOUTUBE: Level1Techs"/>
+    <outline type="rss" xmlUrl="https://www.youtube.com/feeds/videos.xml?channel_id=UCOWcZ6Wicl-1N34H0zZe38w" htmlUrl="" title="YOUTUBE: Level1Linux"/>
+    <outline type="rss" xmlUrl="https://www.youtube.com/feeds/videos.xml?channel_id=UCv1Kcz-CuGM6mxzL3B1_Eiw" htmlUrl="" title="YOUTUBE: The Linux Gamer"/>
+    <outline type="rss" xmlUrl="https://www.youtube.com/feeds/videos.xml?channel_id=UCRBHiacaQb5S70pljtJYB2g" htmlUrl="" title="YOUTUBE: EposVox"/>
+    <outline type="rss" xmlUrl="https://www.youtube.com/feeds/videos.xml?channel_id=UCXuqSBlHAE6Xw-yeJA0Tunw" htmlUrl="" title="YOUTUBE: Linus Tech Tips"/>
+    <outline type="rss" xmlUrl="-------------------------" htmlUrl="" title=""/>
+    <outline type="rss" xmlUrl="-------REDDIT------------" htmlUrl="" title=""/>
+    <outline type="rss" xmlUrl="-------------------------" htmlUrl="" title=""/>
+    <outline type="rss" xmlUrl="https://www.reddit.com/r/linux.rss" htmlUrl="" title="REDDIT: r/linux"/>
+    <outline type="rss" xmlUrl="https://www.reddit.com/r/commandline.rss" htmlUrl="" title="REDDIT: r/commandline"/>
+    <outline type="rss" xmlUrl="https://www.reddit.com/r/linux4noobs.rss" htmlUrl="" title="REDDIT: r/linux4noobs"/>
+    <outline type="rss" xmlUrl="https://www.reddit.com/r/linuxquestions.rss" htmlUrl="" title="REDDIT: r/linuxquestions"/>
+    <outline type="rss" xmlUrl="https://www.reddit.com/r/linuxmasterrace.rss" htmlUrl="" title="REDDIT: r/linuxmasterrace"/>
+    <outline type="rss" xmlUrl="https://www.reddit.com/r/linux_gaming.rss" htmlUrl="" title="REDDIT: r/linux_gaming"/>
+    <outline type="rss" xmlUrl="https://www.reddit.com/r/linuxaudio.rss" htmlUrl="" title="REDDIT: r/linuxaudio"/>
+    <outline type="rss" xmlUrl="https://www.reddit.com/r/ubuntu.rss" htmlUrl="" title="REDDIT: r/ubuntu"/>
+    <outline type="rss" xmlUrl="https://www.reddit.com/r/archlinux.rss" htmlUrl="" title="REDDIT: r/archlinux"/>
+    <outline type="rss" xmlUrl="https://www.reddit.com/r/vim.rss" htmlUrl="" title="REDDIT: r/vim"/>
+    <outline type="rss" xmlUrl="https://www.reddit.com/r/unixporn.rss" htmlUrl="" title="REDDIT: r/unixporn"/>
+    <outline type="rss" xmlUrl="-------------------------" htmlUrl="" title=""/>
+    <outline type="rss" xmlUrl="-------GIT_REPOS---------" htmlUrl="" title=""/>
+    <outline type="rss" xmlUrl="-------------------------" htmlUrl="" title=""/>
+    <outline type="rss" xmlUrl="https://gitlab.com/dwt1.atom" htmlUrl="" title="GITLAB: dwt1 (distrotube)"/>
+    <outline type="rss" xmlUrl="https://github.com/LukeSmithxyz.atom" htmlUrl="" title="GITHUB: LukeSmithxyz"/>
+    <outline type="rss" xmlUrl="https://github.com/casjay.atom" htmlUrl="" title="GITHUB: Casjay"/>
+    <outline type="rss" xmlUrl="https://github.com/casjaysdev.atom" htmlUrl="" title="GITHUB: casjaysdev"/>
+    <outline type="rss" xmlUrl="https://github.com/casjay-dotfiles.atom" htmlUrl="" title="GITHUB: dotfiles"/>
+    <outline type="rss" xmlUrl="-------------------------" htmlUrl="" title=""/>
+    <outline type="rss" xmlUrl="-------SOURCEFORGE-------" htmlUrl="" title=""/>
+    <outline type="rss" xmlUrl="-------------------------" htmlUrl="" title=""/>
+    <outline type="rss" xmlUrl="https://sourceforge.net/p/clonezilla/activity/feed" htmlUrl="" title="SOURCEFORGE: Clonezilla"/>
+    <outline type="rss" xmlUrl="https://sourceforge.net/p/mx-linux/activity/feed" htmlUrl="" title="SORUCEFORGE: MX Linux"/>
+    <outline type="rss" xmlUrl="https://sourceforge.net/p/antix-linux/activity/feed" htmlUrl="" title="SOURCEFORGE: AntiX"/>
+    <outline type="rss" xmlUrl="https://sourceforge.net/mirror/tor-browser/activity/feed" htmlUrl="" title="SOURCEFORGE: Tor Browser"/>
+    <outline type="rss" xmlUrl="-------------------------" htmlUrl="" title=""/>
+    <outline type="rss" xmlUrl="-------ARCHLINUX---------" htmlUrl="" title=""/>
+    <outline type="rss" xmlUrl="-------------------------" htmlUrl="" title=""/>
+    <outline type="rss" xmlUrl="https://www.archlinux.org/feeds/packages/added/" htmlUrl="" title="ARCH: Packages Added"/>
+    <outline type="rss" xmlUrl="https://www.archlinux.org/feeds/packages/removed/" htmlUrl="" title="ARCH: Packages Removed"/>
+    <outline type="rss" xmlUrl="https://aur.archlinux.org/rss/" htmlUrl="" title="ARCH: Packages Added (AUR)"/>
+    <outline type="rss" xmlUrl="https://wiki.archlinux.org/api.php?hidebots=1&amp;urlversion=1&amp;days=7&amp;limit=50&amp;action=feedrecentchanges&amp;feedformat=rss" htmlUrl="" title="ARCH: Arch Wiki"/>
+  </body>
+</opml>

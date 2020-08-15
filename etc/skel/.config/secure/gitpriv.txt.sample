@@ -1,0 +1,3 @@
+# git private server
+
+export GIT_PRIVATE_URL=""

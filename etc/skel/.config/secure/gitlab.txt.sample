@@ -1,0 +1,8 @@
+# gitlab settings
+
+export GITLAB_USERNAME="$(whoami)"
+export GITLAB_URL="https://gitlab.com"
+export GITLAB_API_URL="$GITLAB_URL/api/v4"
+export GITLAB_USER_URL="$GITLAB_URL"
+export GITLAB_DOTFILES="$GITLAB_USERNAME/dotfiles"
+export GITLAB_PROJECT_DIR="$HOME/Projects/gitlab"

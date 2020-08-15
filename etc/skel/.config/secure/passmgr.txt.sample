@@ -1,0 +1,5 @@
+# Password settings
+
+export PASSWD_SAFE="$HOME/.gnupg/safe"
+export PASSWD_INDEX="$HOME/.gnupg/safe/index.passmgr"
+export PASSWD_BACKUP="$HOME/.local/backups/passmgr/$(hostname).$(date +%F).tar}"
