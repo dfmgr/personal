@@ -14,7 +14,7 @@ of AUTH_TOKEN_HERE with the private token you have Quick way is find to run the 
 the MY_GIT_REPO_URL does not include the https:// ( IE: github.com/MyUserName/personal )  
 
 ```bash
-git clone https://github.com/casjay-dotfiles/personal "$HOME/.local/dotfiles/personal"
+git clone https://github.com/dfmgr/personal "$HOME/.local/dotfiles/personal"
 for i in $(find "$HOME/.local/dotfiles/personal/etc" -name "*.sample"); do mv -fv "$i" "${i%.sample}" ; done
 "$HOME/.local/dotfiles/personal/etc" -type f -exec sed -i "s#GITHUBAUTH_TOKEN_HERE#TokenYouCreated#g" {} \; >/dev/null 2>&1
 "$HOME/.local/dotfiles/personal/etc" -type f -exec sed -i "s#MY_GIT_REPO_URL#YourGitRepoG#g" {} \; >/dev/null 2>&1
