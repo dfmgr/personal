@@ -23,9 +23,9 @@ AUTHTOKEN="${GITHUB_ACCESS_TOKEN:-AUTH_TOKEN_HERE}"
 # either http https or git
 GITPROTO="https://"
 #Your git repo
-GITREPO="${MYPERSONALGITREPO:-github.com/casjay-dotfiles/personal}"
+GITREPO="${MYPERSONALGITREPO:-github.com/dfmgr/personal}"
 #scripts repo
-SCRIPTSREPO="https://github.com/casjay-dotfiles/scripts"
+SCRIPTSREPO="https://github.com/dfmgr/installer"
 # Git Command - Private Repo
 GITURL="$GITPROTO$AUTHTOKEN:x-oauth-basic@$GITREPO"
 #Public Repo
@@ -45,7 +45,7 @@ MIN=no
 
 # Set functions
 
-SCRIPTSFUNCTURL="${SCRIPTSFUNCTURL:-https://github.com/casjay-dotfiles/scripts/raw/master/functions}"
+SCRIPTSFUNCTURL="${SCRIPTSFUNCTURL:-https://github.com/dfmgr/installer/raw/master/functions}"
 SCRIPTSFUNCTDIR="${SCRIPTSFUNCTDIR:-/usr/local/share/CasjaysDev/scripts}"
 SCRIPTSFUNCTFILE="${SCRIPTSFUNCTFILE:-system-installer.bash}"
 
@@ -101,10 +101,10 @@ rm -Rf "$DOTTEMP" >/dev/null 2>&1
 
 if ! cmd_exists dotfiles; then
   if (sudo -vn && sudo -ln) 2>&1 | grep -v 'may not' >/dev/null; then
-    sudo bash -c "$(curl -LSs https://github.com/casjay-dotfiles/scripts/raw/master/install.sh)"
-    sudo bash -c "$(curl -LSs https://github.com/casjay-dotfiles/scripts/raw/master/install.sh)"
+    sudo bash -c "$(curl -LSs https://github.com/dfmgr/installer/raw/master/install.sh)"
+    sudo bash -c "$(curl -LSs https://github.com/dfmgr/installer/raw/master/install.sh)"
   else
-    printf_red 'please run sudo bash -c "$(curl -LSs https://github.com/casjay-dotfiles/scripts/raw/master/install.sh)"'
+    printf_red 'please run sudo bash -c "$(curl -LSs https://github.com/dfmgr/installer/raw/master/install.sh)"'
     exit 1
   fi
 fi
@@ -144,8 +144,8 @@ if [ -d "$DOTFILES" ]; then cp -Rf "$DOTFILES" "$DOTTEMP" >/dev/null 2>&1; fi
 printf_blue "The installer is updating the scripts"
 ##################################################################################################
 
-for sudoconf in scripts samba ssl ssh postfix cron tor; do
-  sudo bash -c "$(curl -LSs https://github.com/casjay-dotfiles/$sudoconf/raw/master/install.sh)"
+for sudoconf in binaries samba ssl ssh postfix cron tor; do
+  sudo bash -c "$(curl -LSs https://github.com/systemmgr/$sudoconf/raw/master/install.sh)"
 done
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
