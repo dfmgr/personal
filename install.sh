@@ -1,17 +1,15 @@
 #!/usr/bin/env bash
-
-APPNAME="$(basename $0)"
-USER="${SUDO_USER:-${USER}}"
-HOME="${USER_HOME:-${HOME}}"
+PROGNAME="$(basename $0)"
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-# @Author          : Jason
-# @Contact         : casjaysdev@casjay.net
-# @File            : install
-# @Created         : Wed, Aug 09, 2020, 02:00 EST
-# @License         : WTFPL
-# @Copyright       : Copyright (c) CasjaysDev
-# @Description     : installer script for dotfiles-personal
+##@Version     : 010920210141-git
+# @Author      : Jason
+# @Contact     : casjaysdev@casjay.net
+# @File        : install
+# @Created     : Mon, Dec 27, 2019, 21:13 EST
+# @License     : WTFPL
+# @Copyright   : Copyright (c) CasjaysDev
+# @Description : installer script for dotfiles-personal
 #
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -19,11 +17,11 @@ HOME="${USER_HOME:-${HOME}}"
 
 PATH="$HOME/.local/bin:/usr/local/bin:/usr/bin:/bin:/usr/local/games:/usr/games:/usr/local/sbin:/usr/sbin:/sbin:/usr/bin/core_perl/cpan"
 #Modify and set if using the auth token
-AUTHTOKEN="${GITHUB_ACCESS_TOKEN:-AUTH_TOKEN_HERE}"
+AUTHTOKEN="${GITHUB_ACCESS_TOKEN:-$token}"
 # either http https or git
 GITPROTO="https://"
 #Your git repo
-GITREPO="${MYPERSONALGITREPO:-github.com/dfmgr/personal}"
+GITREPO="${MYPERSONALGITREPO:-github.com/casjay/personal}"
 #scripts repo
 SCRIPTSREPO="https://github.com/dfmgr/installer"
 # Git Command - Private Repo
@@ -45,9 +43,9 @@ MIN=no
 
 # Set functions
 
-SCRIPTSFUNCTURL="${SCRIPTSFUNCTURL:-https://github.com/dfmgr/installer/raw/master/functions}"
-SCRIPTSFUNCTDIR="${SCRIPTSFUNCTDIR:-/usr/local/share/CasjaysDev/scripts}"
-SCRIPTSFUNCTFILE="${SCRIPTSFUNCTFILE:-system-installer.bash}"
+SCRIPTSFUNCTURL="${SCRIPTSAPPFUNCTURL:-https://github.com/dfmgr/installer/raw/master/functions}"
+SCRIPTSFUNCTDIR="${SCRIPTSAPPFUNCTDIR:-/usr/local/share/CasjaysDev/scripts}"
+SCRIPTSFUNCTFILE="${SCRIPTSAPPFUNCTFILE:-app-installer.bash}"
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -56,30 +54,37 @@ if [ -f "$SCRIPTSFUNCTDIR/functions/$SCRIPTSFUNCTFILE" ]; then
 elif [ -f "$HOME/.local/share/CasjaysDev/functions/$SCRIPTSFUNCTFILE" ]; then
   . "$HOME/.local/share/CasjaysDev/functions/$SCRIPTSFUNCTFILE"
 else
-  mkdir -p "/tmp/CasjaysDev/functions"
-  curl -LSs "$SCRIPTSFUNCTURL/$SCRIPTSFUNCTFILE" -o "/tmp/CasjaysDev/functions/$SCRIPTSFUNCTFILE" || exit 1
-  . "/tmp/CasjaysDev/functions/$SCRIPTSFUNCTFILE"
+  mkdir -p "$HOME/.local/share/CasjaysDev/functions"
+  curl -LSs "$SCRIPTSFUNCTURL/$SCRIPTSFUNCTFILE" -o "$HOME/.local/share/CasjaysDev/functions/$SCRIPTSFUNCTFILE" || exit 1
+  . "$HOME/.local/share/CasjaysDev/functions/$SCRIPTSFUNCTFILE"
 fi
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-install_all() {
-  dotfiles install --all
-  exit
-}
-install_server() {
-  dotfiles install bash git tmux vifm vim
-  exit
-}
-install_desktop() {
-  dotfiles install awesome bspwm i3 openbox qtile xfce4 xmonad
-  exit
-}
+##################################################################################################
+
+clear
+sleep 1
+printf_green "\t\tInitializing the installer please wait\n"
+sleep 2
 
 ##################################################################################################
 
+urlverify "$GITURL" || printf_exit "$GITURL is invalid"
+
+##################################################################################################
+
+install_all_dfmgr() { dfmgr install --all || return 1; }
+install_basic_dfmgr() { dfmgr install bash git vim || return 1; }
+install_server_dfmgr() { dfmgr install bash git tmux vifm vim || return 1; }
+install_desktop_dfmr() { dfmgr install awesome bspwm i3 openbox qtile xfce4 xmonad || return 1; }
+
+##################################################################################################
+
+_pre_inst() {
 if [ -z "$AUTHTOKEN" ] || [ "$AUTHTOKEN" == "YOUR_AUTH_TOKEN" ]; then
-  printf_red "AUTH Token is not set"
+  printf_
+  red "\t\tAUTH Token is not set"
   exit 1
 fi
 if [ ! -f "$(which sudo 2>/dev/null)" ] && [[ $EUID -ne 0 ]]; then
@@ -87,82 +92,78 @@ if [ ! -f "$(which sudo 2>/dev/null)" ] && [[ $EUID -ne 0 ]]; then
   exit 1
 fi
 
-##################################################################################################
-
-clear
-sleep 1
-printf_green "Initializing the installer please wait"
-sleep 2
-
-##################################################################################################
-
 if [ ! -d "$DOTFILES"/.git ]; then rm -Rf "$DOTFILES"; fi
 rm -Rf "$DOTTEMP" >/dev/null 2>&1
 
-if ! cmd_exists dotfiles; then
-  if (sudo -vn && sudo -ln) 2>&1 | grep -v 'may not' >/dev/null; then
-    sudo bash -c "$(curl -LSs https://github.com/dfmgr/installer/raw/master/install.sh)"
-    sudo bash -c "$(curl -LSs https://github.com/dfmgr/installer/raw/master/install.sh)"
-  else
-    printf_red 'please run sudo bash -c "$(curl -LSs https://github.com/dfmgr/installer/raw/master/install.sh)"'
-    exit 1
+if [[ "$OSTYPE" =~ ^linux ]]; then
+  if ! cmd_exists systemmgr; then
+    if (sudo -vn && sudo -ln) 2>&1 | grep -v 'may not' >/dev/null; then
+      sudo bash -c "$(curl -LSs https://github.com/systemmgr/installer/raw/master/install.sh)"
+      sudo bash -c "$(curl -LSs https://github.com/systemmgr/installer/raw/master/install.sh)"
+    else
+      printf_red '\t\tplease run sudo bash -c "$(curl -LSs https://github.com/systemmgr/installer/raw/master/install.sh)\n"'
+      exit 1
+    fi
   fi
 fi
+}
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 if cmd_exists "sudoers"; then
-  sudoers nopass
+  printf_custom "4" "$(sudoers nopass)"
 fi
 
 ##################################################################################################
-
-printf_blue "Setting up the git repo"
-printf_blue "$GITREPO"
-
+printf_blue "\t\tSetting up the git repo\n"
+printf_blue "\t\t$GITREPO\n"
 ##################################################################################################
 
-find "$HOME/" -xtype l -delete >/dev/null 2>&1
-mkdir -p "$HOME"/.ssh "$HOME"/.gnupg >/dev/null 2>&1
-
-##################################################################################################
-
+_git_repo_init() {
 if [ -d "$DOTFILES"/.git ]; then
-  cd "$DOTFILES"
-  git pull -fq >/dev/null 2>&1
+  #git -C "$DOTFILES" pull -f
+  git -C "$DOTFILES" pull -f
   getexitcode "repo update successfull"
 else
-  git clone -q --depth=1 "$GITURL" "$DOTFILES" >/dev/null 2>&1
+  #git clone "$GITURL" "$DOTFILES"
+  git clone "$GITURL" "$DOTFILES"
   getexitcode "git clone successfull"
 fi
 
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
 if [ -d "$DOTFILES" ]; then cp -Rf "$DOTFILES" "$DOTTEMP" >/dev/null 2>&1; fi
+}
 
 ##################################################################################################
-printf_blue "The installer is updating the scripts"
+printf_blue "\t\tThe installer is updating the scripts\n"
 ##################################################################################################
 
-for sudoconf in binaries samba ssl ssh postfix cron tor; do
-  sudo bash -c "$(curl -LSs https://github.com/systemmgr/$sudoconf/raw/master/install.sh)"
+_scripts_init() {
+for sudoconf in installer; do
+  sudo systemmgr install $sudoconf
 done
 
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-if [ "$1" = "--all" ]; then
-  install_all
-elif [ "$1" = "--server" ]; then
-  install_server
-elif [ "$1" = "--desktop" ]; then
-  install_desktop
-elif [ "$1" = "" ]; then
-  dotfiles install bash dircolors git vim tmux screen
+if [[ "$OSTYPE" =~ ^linux ]]; then
+  if [ "$1" = "--all" ]; then
+    install_all_dfmgr
+  elif [ "$1" = "--server" ]; then
+    install_server_dfmgr
+  elif [ "$1" = "--desktop" ]; then
+    install_desktop_dfmgr
+  elif [ "$1" = "" ]; then
+    install_basic_dfmgr
+  fi
+else
+  install_basic_dfmgr
 fi
+}
 
 ##################################################################################################
-printf_blue "Installing your personal files"
+printf_blue "\t\tInstalling your personal files\n"
 ##################################################################################################
+
+_files_init() {
+find "$HOME/" -xtype l -delete >/dev/null 2>&1
+mkdir -p "$HOME"/.ssh "$HOME"/.gnupg >/dev/null 2>&1
 
 chmod -Rf 755 "$DOTTEMP"/usr/local/bin/* >/dev/null 2>&1
 chmod -Rf 755 "$DOTTEMP"/etc/skel/.local/bin/* >/dev/null 2>&1
@@ -179,20 +180,20 @@ find "$DOTTEMP"/usr -type f -iname "*.cgi" -exec chmod 755 -Rf {} \; >/dev/null 
 
 unalias cp 2>/dev/null
 
-cp -Rfa "$DOTTEMP"/etc/skel/. "$HOME"/
+rsync -ahqk "$DOTTEMP"/etc/skel/. "$HOME"/
 
 export GPG_TTY="$(tty)"
 
 if (sudo -vn && sudo -ln) 2>&1 | grep -v 'may not' >/dev/null; then
   mv -f "$DOTTEMP"/etc/skel "$DOTTEMP"/tmp/skel >/dev/null 2>&1
-  sudo cp -Rf "$DOTTEMP"/etc/* /etc/ >/dev/null 2>&1
+  sudo rsync -ahq "$DOTTEMP"/etc/* /etc/ >/dev/null 2>&1
   mv -f "$DOTTEMP"/tmp/skel "$DOTTEMP"/etc/skel >/dev/null 2>&1
 fi
 
 # Import gpg keys
 gpg --import "$DOTTEMP"/tmp/*.gpg 2>/dev/null
 gpg --import "$DOTTEMP"/tmp/*.sec 2>/dev/null
-gpg --import-ownertrust "$DOTTEMP"/tmp/ownertrust.gpg 2>/dev/null
+gpg --import-ownertrust "$DOTTEMP"/tmp/*.trust 2>/dev/null
 
 # import podcast feeds
 if cmd_exists castero; then
@@ -217,46 +218,32 @@ find "$HOME"/.gnupg "$HOME"/.ssh -type d -exec chmod 700 {} \; >/dev/null 2>&1
 
 chmod 755 -f "$HOME" >/dev/null 2>&1
 
-#if [[ $EUID -eq 0 ]]; then
-# rm -Rf --preserve-root /var/lib/tor/*
-# rm -Rf --preserve-root /var/lib/tor/.bash*
-#fi
-
 rm -Rf "$HOME/.local/share/mail/*/.keep" >/dev/null 2>&1
 rm -Rf "$TMP_FILE"
 
 mkdir -p "$HOME"/{Projects,Music,Videos,Downloads,Pictures,Documents}
+}
 
 ##################################################################################################
-printf_green "Installing your personal files completed" "\n\n"
+printf_green "\t\tInstalling your personal files completed\n\n"
 ##################################################################################################
 
+main() {
 if [ "$DOTTEMP" != "$DOTFILES" ]; then
   if [ -d "$DOTTEMP" ]; then rm -Rf "$DOTTEMP" >/dev/null 2>&1; fi
 fi
+execute "_pre_inst" "Setting up"
+execute "_git_repo_init" "Initializing git repo"
+execute "_scripts_init" "Installing scripts"
+execute "_files_init" "Installing files"
+unset __colors DOTTEMP MIN UPDATE DESKTOP
+exit "$?"
+}
 
-if [ "$MIN" = "no" ]; then
-  unset __colors DOTTEMP MIN UPDATE DESKTOP
-  exit 0
-fi
+##################################################################################################
+# finally run main function
+main "$@"
 
-if [ -z "$MIN" ] || [ "$MIN" = "yes" ]; then
-  sleep 5
-  bash -c "$(curl -LsS https://raw.githubusercontent.com/casjay-dotfiles/minimal/master/install.sh)"
-  unset __colors DOTTEMP MIN UPDATE DESKTOP
-  exit 0
-fi
+##################################################################################################
 
-if [ ! -z "$UPDATE" ]; then
-  sleep 5
-  bash -c "$(curl -LsS https://raw.githubusercontent.com/casjay-dotfiles/minimal/master/update.sh)"
-  unset __colors DOTTEMP MIN UPDATE DESKTOP
-  exit 0
-fi
-
-if [ ! -z "$DESKTOP" ]; then
-  sleep 5
-  bash -c "$(curl -LsS https://github.com/casjay-dotfiles/desktops/raw/master/src/os/setup.sh)"
-  unset __colors DOTTEMP MIN UPDATE DESKTOP
-  exit 0
-fi
+# end
