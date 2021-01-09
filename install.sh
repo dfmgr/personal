@@ -17,11 +17,11 @@ PROGNAME="$(basename $0)"
 
 PATH="$HOME/.local/bin:/usr/local/bin:/usr/bin:/bin:/usr/local/games:/usr/games:/usr/local/sbin:/usr/sbin:/sbin:/usr/bin/core_perl/cpan"
 #Modify and set if using the auth token
-AUTHTOKEN="${GITHUB_ACCESS_TOKEN:-$token}"
+AUTHTOKEN="${GITHUB_ACCESS_TOKEN:-testing}"
 # either http https or git
 GITPROTO="https://"
 #Your git repo
-GITREPO="${MYPERSONALGITREPO:-github.com/casjay/personal}"
+GITREPO="${MYPERSONALGITREPO:-github.com/dfmgr/personal}"
 #scripts repo
 SCRIPTSREPO="https://github.com/dfmgr/installer"
 # Git Command - Private Repo
@@ -106,9 +106,6 @@ fi
 }
 
 ##################################################################################################
-printf_blue "\t\tSetting up the git repo\n"
-printf_blue "\t\t$GITREPO\n"
-##################################################################################################
 
 _git_repo_init() {
   if [ -d "$DOTFILES"/.git ]; then
@@ -124,8 +121,6 @@ _git_repo_init() {
   if [ -d "$DOTFILES" ]; then cp -Rf "$DOTFILES" "$DOTTEMP" >/dev/null 2>&1; fi
 }
 
-##################################################################################################
-printf_blue "\t\tThe installer is updating the scripts\n"
 ##################################################################################################
 
 _scripts_init() {
@@ -148,8 +143,6 @@ _scripts_init() {
   fi
 }
 
-##################################################################################################
-printf_blue "\t\tInstalling your personal files\n"
 ##################################################################################################
 
 _files_init() {
@@ -220,9 +213,15 @@ main() {
   if [ "$DOTTEMP" != "$DOTFILES" ]; then
     if [ -d "$DOTTEMP" ]; then rm -Rf "$DOTTEMP" >/dev/null 2>&1; fi
   fi
-  execute "_pre_inst" "Setting up"
+  ##################################################################################################
+  printf_blue "\t\tSetting up the git repo: $GITREPO\n"
+    execute "_pre_inst" "Setting up"
   execute "_git_repo_init" "Initializing git repo"
+  ##################################################################################################
+  printf_blue "\t\tThe installer is updating the scripts\n"
   execute "_scripts_init" "Installing scripts"
+  ##################################################################################################
+  printf_blue "\t\tInstalling your personal files\n"
   execute "_files_init" "Installing files"
   unset __colors DOTTEMP MIN UPDATE DESKTOP
   ##################################################################################################
