@@ -14,6 +14,7 @@ PROGNAME="$(basename $0)"
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 # Options
+exit # remove this line
 
 PATH="$HOME/.local/bin:/usr/local/bin:/usr/bin:/bin:/usr/local/games:/usr/games:/usr/local/sbin:/usr/sbin:/sbin:/usr/bin/core_perl/cpan"
 #Modify and set if using the auth token
