@@ -17,7 +17,7 @@ PROGNAME="$(basename $0)"
 
 PATH="$HOME/.local/bin:/usr/local/bin:/usr/bin:/bin:/usr/local/games:/usr/games:/usr/local/sbin:/usr/sbin:/sbin:/usr/bin/core_perl/cpan"
 #Modify and set if using the auth token
-AUTHTOKEN="${GITHUB_ACCESS_TOKEN:-testing}"
+AUTHTOKEN="${GITHUB_ACCESS_TOKEN}"
 # either http https or git
 GITPROTO="https://"
 #Your git repo
@@ -100,9 +100,9 @@ _pre_inst() {
       fi
     fi
   fi
-if cmd_exists "sudoers"; then
-  sudoers nopass
-fi
+  if cmd_exists "sudoers"; then
+    sudoers nopass
+  fi
 }
 
 ##################################################################################################
@@ -150,12 +150,12 @@ _files_init() {
   mkdir -p "$HOME"/.ssh "$HOME"/.gnupg >/dev/null 2>&1
 
   chmod -Rf 755 "$DOTTEMP"/usr/local/bin/* >/dev/null 2>&1
-  chmod -Rf 755 "$DOTTEMP"/etc/skel/.local/bin/* >/dev/null 2>&1
+  chmod -Rf 755 "$DOTTEMP"root/skel/.local/bin/* >/dev/null 2>&1
 
-  find "$DOTTEMP"/etc -type f -iname "*.bash" -exec chmod 755 -Rf {} \; >/dev/null 2>&1
-  find "$DOTTEMP"/etc -type f -iname "*.sh" -exec chmod 755 -Rf {} \; >/dev/null 2>&1
-  find "$DOTTEMP"/etc -type f -iname "*.pl" -exec chmod 755 -Rf {} \; >/dev/null 2>&1
-  find "$DOTTEMP"/etc -type f -iname "*.cgi" -exec chmod 755 -Rf {} \; >/dev/null 2>&1
+  find "$DOTTEMP"root -type f -iname "*.bash" -exec chmod 755 -Rf {} \; >/dev/null 2>&1
+  find "$DOTTEMP"root -type f -iname "*.sh" -exec chmod 755 -Rf {} \; >/dev/null 2>&1
+  find "$DOTTEMP"root -type f -iname "*.pl" -exec chmod 755 -Rf {} \; >/dev/null 2>&1
+  find "$DOTTEMP"root -type f -iname "*.cgi" -exec chmod 755 -Rf {} \; >/dev/null 2>&1
 
   find "$DOTTEMP"/usr -type f -iname "*.bash" -exec chmod 755 -Rf {} \; >/dev/null 2>&1
   find "$DOTTEMP"/usr -type f -iname "*.sh" -exec chmod 755 -Rf {} \; >/dev/null 2>&1
@@ -164,14 +164,14 @@ _files_init() {
 
   unalias cp 2>/dev/null
 
-  rsync -ahqk "$DOTTEMP"/etc/skel/. "$HOME"/
+  rsync -ahqk "$DOTTEMP"root/skel/. "$HOME"/
 
   export GPG_TTY="$(tty)"
 
   if (sudo -vn && sudo -ln) 2>&1 | grep -v 'may not' >/dev/null; then
-    mv -f "$DOTTEMP"/etc/skel "$DOTTEMP"/tmp/skel >/dev/null 2>&1
-    sudo rsync -ahq "$DOTTEMP"/etc/* /etc/ >/dev/null 2>&1
-    mv -f "$DOTTEMP"/tmp/skel "$DOTTEMP"/etc/skel >/dev/null 2>&1
+    mv -f "$DOTTEMP"root/skel "$DOTTEMP"/tmp/skel >/dev/null 2>&1
+    sudo rsync -ahq "$DOTTEMP"root/* root/ >/dev/null 2>&1
+    mv -f "$DOTTEMP"/tmp/skel "$DOTTEMP"root/skel >/dev/null 2>&1
   fi
 
   # Import gpg keys
@@ -215,7 +215,7 @@ main() {
   fi
   ##################################################################################################
   printf_blue "\t\tSetting up the git repo: $GITREPO\n"
-    execute "_pre_inst" "Setting up"
+  execute "_pre_inst" "Setting up"
   execute "_git_repo_init" "Initializing git repo"
   ##################################################################################################
   printf_blue "\t\tThe installer is updating the scripts\n"
