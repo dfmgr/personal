@@ -71,7 +71,7 @@ sleep 2
 ##################################################################################################
 
 install_all_dfmgr() { dfmgr install --all || return 1; }
-install_basic_dfmgr() { dfmgr install bash git vim || return 1; }
+install_basic_dfmgr() { dfmgr install misc bash git vim || return 1; }
 install_server_dfmgr() { dfmgr install bash git tmux vifm vim || return 1; }
 install_desktop_dfmr() { dfmgr install awesome bspwm i3 openbox qtile xfce4 xmonad || return 1; }
 
