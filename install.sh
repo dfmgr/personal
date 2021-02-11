@@ -65,7 +65,7 @@ fi
 
 clear
 sleep 1
-printf_green "\t\tInitializing the installer please wait\n"
+printf_green "Initializing the installer please wait"
 sleep 2
 
 ##################################################################################################
@@ -79,11 +79,11 @@ install_desktop_dfmr() { dfmgr install awesome bspwm i3 openbox qtile xfce4 xmon
 
 _pre_inst() {
   if [ -z "$AUTHTOKEN" ] || [ "$AUTHTOKEN" == "YOUR_AUTH_TOKEN" ]; then
-    printf_red "\t\tAUTH Token is not set"
+    printf_red "AUTH Token is not set"
     exit 1
   fi
   if [ ! -f "$(which sudo 2>/dev/null)" ] && [[ $EUID -ne 0 ]]; then
-    printf_red "\t\tSudo is needed, however its not installed installed\n"
+    printf_red "Sudo is needed, however its not installed installed"
     exit 1
   fi
 
@@ -96,7 +96,7 @@ _pre_inst() {
         sudo bash -c "$(curl -LSs https://github.com/systemmgr/installer/raw/master/install.sh)"
         sudo bash -c "$(curl -LSs https://github.com/systemmgr/installer/raw/master/install.sh)"
       else
-        printf_red '\t\tplease run sudo bash -c "$(curl -LSs https://github.com/systemmgr/installer/raw/master/install.sh)\n"'
+        printf_red 'please run sudo bash -c "$(curl -LSs https://github.com/systemmgr/installer/raw/master/install.sh)"'
         exit 1
       fi
     fi
@@ -215,18 +215,18 @@ main() {
     if [ -d "$DOTTEMP" ]; then rm -Rf "$DOTTEMP" >/dev/null 2>&1; fi
   fi
   ##################################################################################################
-  printf_blue "\t\tSetting up the git repo: $GITREPO\n"
+  printf_blue "Setting up the git repo: $GITREPO"
   execute "_pre_inst" "Setting up"
   execute "_git_repo_init" "Initializing git repo"
   ##################################################################################################
-  printf_blue "\t\tThe installer is updating the scripts\n"
+  printf_blue "The installer is updating the scripts"
   execute "_scripts_init" "Installing scripts"
   ##################################################################################################
-  printf_blue "\t\tInstalling your personal files\n"
+  printf_blue "Installing your personal files"
   execute "_files_init" "Installing files"
   unset __colors DOTTEMP MIN UPDATE DESKTOP
   ##################################################################################################
-  printf_green "\t\tInstalling your personal files completed\n\n"
+  printf_green "Installing your personal files completed"
   ##################################################################################################
 }
 
