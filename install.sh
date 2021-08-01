@@ -43,7 +43,7 @@ TMP_FILE="$(mktemp /tmp/dfm-XXXXXXXXX)"
 
 # Set functions
 
-SCRIPTSFUNCTURL="${SCRIPTSAPPFUNCTURL:-https://github.com/dfmgr/installer/raw/master/functions}"
+SCRIPTSFUNCTURL="${SCRIPTSAPPFUNCTURL:-https://github.com/dfmgr/installer/raw/main/functions}"
 SCRIPTSFUNCTDIR="${SCRIPTSAPPFUNCTDIR:-/usr/local/share/CasjaysDev/scripts}"
 SCRIPTSFUNCTFILE="${SCRIPTSAPPFUNCTFILE:-app-installer.bash}"
 
@@ -93,10 +93,10 @@ _pre_inst() {
   if [[ "$OSTYPE" =~ ^linux ]]; then
     if ! cmd_exists systemmgr; then
       if (sudo -vn && sudo -ln) 2>&1 | grep -v 'may not' >/dev/null; then
-        sudo bash -c "$(curl -LSs https://github.com/systemmgr/installer/raw/master/install.sh)"
-        sudo bash -c "$(curl -LSs https://github.com/systemmgr/installer/raw/master/install.sh)"
+        sudo bash -c "$(curl -LSs https://github.com/systemmgr/installer/raw/main/install.sh)"
+        sudo bash -c "$(curl -LSs https://github.com/systemmgr/installer/raw/main/install.sh)"
       else
-        printf_red 'please run sudo bash -c "$(curl -LSs https://github.com/systemmgr/installer/raw/master/install.sh)"'
+        printf_red 'please run sudo bash -c "$(curl -LSs https://github.com/systemmgr/installer/raw/main/install.sh)"'
         exit 1
       fi
     fi
