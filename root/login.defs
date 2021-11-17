@@ -1,6 +1,6 @@
 # *REQUIRED*
-#QMAIL_DIR          Maildir/
-#MAIL_FILE          Maildir/
+#QMAIL_DIR         Maildir/
+#MAIL_FILE         Maildir/
 MAIL_DIR           Maildir/
 PASS_MAX_DAYS      99999
 PASS_MIN_DAYS      0
