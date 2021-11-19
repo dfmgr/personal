@@ -1,5 +1,4 @@
 # gitlab settings
-
 export GITLAB_USERNAME="$(whoami)"
 export GITLAB_URL="https://gitlab.com"
 export GITLAB_API_URL="$GITLAB_URL/api/v4"

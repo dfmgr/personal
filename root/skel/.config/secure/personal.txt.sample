@@ -1,3 +1,17 @@
-# full url to your private repo
+### location info
+export MYLOCATION_ID=""
+export MYLOCATION_ZIP=""
+export MYLOCATION_STATE=""
+export MYLOCATION_COUNTRY=""
+export MYLOCATION_CITY_ID=""
+export DOCKER_GITHUB=""
 
+### private repo
+export PERSONAL_GIT_HOST="git.casjaydsdev.com"
 export MYPERSONAL_GIT_REPO="MY_GIT_REPO_URL"
+
+### git config
+export GIT_AUTHOR_NAME="$(whoami)"
+export GIT_AUTHOR_EMAIL="$(whoami)@$(hostname -f)"
+export GIT_COMMITTER_NAME="$(whoami)"
+export GIT_COMMITTER_EMAIL="$(whoami)@$(hostname -f)"
