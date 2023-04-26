@@ -1,230 +1,300 @@
 #!/usr/bin/env bash
+# shellcheck shell=bash
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-APPNAME="$(basename "$0")"
-VERSION="202111171035-git"
-USER="${SUDO_USER:-${USER}}"
-HOME="${USER_HOME:-${HOME}}"
-SRC_DIR="${BASH_SOURCE%/*}"
+##@Version           :  202304251442-git
+# @@Author           :  Jason Hempstead
+# @@Contact          :  jason@casjaysdev.com
+# @@License          :  WTFPL
+# @@ReadME           :  install.sh --help
+# @@Copyright        :  Copyright: (c) 2023 Jason Hempstead, Casjays Developments
+# @@Created          :  Tuesday, Apr 25, 2023 14:42 EDT
+# @@File             :  install.sh
+# @@Description      :  Install configurations for personal
+# @@Changelog        :  New script
+# @@TODO             :  Better documentation
+# @@Other            :
+# @@Resource         :
+# @@Terminal App     :  no
+# @@sudo/root        :  no
+# @@Template         :  installers/dfmgr
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-#set opts
-exit #remove this line to enable script
-
+# shell check options
+# shellcheck disable=SC2317
+# shellcheck disable=SC2120
+# shellcheck disable=SC2155
+# shellcheck disable=SC2199
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-##@Version       : 202111171035-git
-# @Author        : Jason Hempstead
-# @Contact       : jason@casjaysdev.com
-# @License       : WTFPL
-# @ReadME        : install.sh --help
-# @Copyright     : Copyright: (c) 2021 Jason Hempstead, CasjaysDev
-# @Created       : Tuesday, Mar 30, 2021 21:20 EDT
-# @File          : install.sh
-# @Description   : installer script for dotfiles-personal
-# @TODO          :
-# @Other         :
-# @Resource      :
+APPNAME="personal"
+VERSION="202304251442-git"
+HOME="${USER_HOME:-$HOME}"
+USER="${SUDO_USER:-$USER}"
+RUN_USER="${SUDO_USER:-$USER}"
+SCRIPT_SRC_DIR="${BASH_SOURCE%/*}"
+export SCRIPTS_PREFIX="dfmgr"
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+BUILD_APPNAME="$APPNAME"
+APPDIR="$HOME/.config/$APPNAME"
+REPO_BRANCH="${GIT_REPO_BRANCH:-main}"
+PLUGIN_DIR="$HOME/.local/share/$APPNAME/plugins"
+REPO="https://github.com/$SCRIPTS_PREFIX/$APPNAME"
+INSTDIR="$HOME/.local/share/CasjaysDev/$SCRIPTS_PREFIX/$APPNAME"
+REPORAW="https://github.com/$SCRIPTS_PREFIX/$APPNAME/raw/$REPO_BRANCH"
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# Set bash options
+trap 'retVal=$?;trap_exit' ERR EXIT SIGINT
+#if [ ! -t 0 ] && { [ "$1" = --term ] || [ $# = 0 ]; }; then { [ "$1" = --term ] && shift 1 || true; } && TERMINAL_APP="TRUE" myterminal -e "$APPNAME $*" && exit || exit 1; fi
+[ "$1" = "--debug" ] && set -x && export SCRIPT_OPTS="--debug" && export _DEBUG="on"
+[ "$1" = "--raw" ] && export SHOW_RAW="true"
+set -o pipefail
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+for app in curl wget git; do type -P "$app" >/dev/null 2>&1 || missing_app+=("$app"); done && [ -z "${missing_app[*]}" ] || { printf '%s\n' "${missing_app[*]}" && exit 1; }
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # Import functions
 CASJAYSDEVDIR="${CASJAYSDEVDIR:-/usr/local/share/CasjaysDev/scripts}"
 SCRIPTSFUNCTDIR="${CASJAYSDEVDIR:-/usr/local/share/CasjaysDev/scripts}/functions"
-SCRIPTSFUNCTFILE="${SCRIPTSAPPFUNCTFILE:-app-installer.bash}"
+SCRIPTSFUNCTFILE="${SCRIPTSAPPFUNCTFILE:-mgr-installers.bash}"
 SCRIPTSFUNCTURL="${SCRIPTSAPPFUNCTURL:-https://github.com/dfmgr/installer/raw/main/functions}"
+connect_test() { curl -q -ILSsf --retry 1 -m 1 "https://1.1.1.1" | grep -iq 'server:*.cloudflare' || return 1; }
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 if [ -f "$PWD/$SCRIPTSFUNCTFILE" ]; then
   . "$PWD/$SCRIPTSFUNCTFILE"
 elif [ -f "$SCRIPTSFUNCTDIR/$SCRIPTSFUNCTFILE" ]; then
   . "$SCRIPTSFUNCTDIR/$SCRIPTSFUNCTFILE"
+elif connect_test; then
+  curl -q -LSsf "$SCRIPTSFUNCTURL/$SCRIPTSFUNCTFILE" -o "/tmp/$SCRIPTSFUNCTFILE" || exit 1
+  . "/tmp/$SCRIPTSFUNCTFILE"
 else
   echo "Can not load the functions file: $SCRIPTSFUNCTDIR/$SCRIPTSFUNCTFILE" 1>&2
-  exit 1
+  exit 90
 fi
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-# user system devenv dfmgr dockermgr fontmgr iconmgr pkmgr systemmgr thememgr wallpapermgr
-user_installdirs
+# Define custom functions
+__download_file() { curl -q -LSsf "$1" -o "$2" || return 1; }
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# OS Support: supported_os unsupported_oses
+supported_os linux mac windows
+unsupported_oses
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# get sudo credentials
+sudorun "true"
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# Requires root - restarting with sudo
+#sudoreq "$0 *"
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# Make sure the scripts repo is installed
+scripts_check
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# Call the main function
+dfmgr_install
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# Script options IE: --help --version
 show_optvars "$@"
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-# Options
-PATH="$HOME/.local/bin:/usr/local/bin:/usr/bin:/bin:/usr/local/games:/usr/games:/usr/local/sbin:/usr/sbin:/sbin:/usr/bin/core_perl/cpan"
-# Modify and set if using the auth token
-AUTHTOKEN="${GITHUB_ACCESS_TOKEN:-$MYPERSONAL_GIT_TOKEN}"
-# either http https or git
-GIT_PROTO="https://"
-# Your git repo
-GIT_REPO="${MYPERSONAL_GIT_REPO:-github.com/dfmgr/personal}"
-# scripts repo
-SCRIPTSREPO="https://github.com/dfmgr/installer"
-# Default NTP Server
-NTPSERVER="ntp.casjay.net"
-# Set primary dir
-DOTFILES="$HOME/.local/dotfiles/personal"
-# Set the temp directory
-DOTTEMP="/tmp/dotfiles-personal-$USER"
-# Set tmpfile
-TMP_FILE="$(mktemp /tmp/dfm-XXXXXXXXX)"
-# Git Command - Private Repo
-FULL_GIT_URL="$GIT_PROTO$AUTHTOKEN:x-oauth-basic@$GIT_REPO"
-#Public Repo
-#FULL_GIT_URL="$GIT_PROTO$GIT_REPO"
+# trap the cleanup function
+trap_exit
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-# Set functions
-SCRIPTSFUNCTURL="${SCRIPTSAPPFUNCTURL:-https://github.com/dfmgr/installer/raw/main/functions}"
-SCRIPTSFUNCTDIR="${SCRIPTSAPPFUNCTDIR:-/usr/local/share/CasjaysDev/scripts}"
-SCRIPTSFUNCTFILE="${SCRIPTSAPPFUNCTFILE:-app-installer.bash}"
+# Initialize the installer
+dfmgr_run_init
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-if [ -f "$SCRIPTSFUNCTDIR/functions/$SCRIPTSFUNCTFILE" ]; then
-  . "$SCRIPTSFUNCTDIR/functions/$SCRIPTSFUNCTFILE"
-elif [ -f "$HOME/.local/share/CasjaysDev/functions/$SCRIPTSFUNCTFILE" ]; then
-  . "$HOME/.local/share/CasjaysDev/functions/$SCRIPTSFUNCTFILE"
-else
-  mkdir -p "$HOME/.local/share/CasjaysDev/functions"
-  curl -LSs "$SCRIPTSFUNCTURL/$SCRIPTSFUNCTFILE" -o "$HOME/.local/share/CasjaysDev/functions/$SCRIPTSFUNCTFILE" || exit 1
-  . "$HOME/.local/share/CasjaysDev/functions/$SCRIPTSFUNCTFILE"
+# Do not update
+#installer_noupdate "$@"
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# Defaults
+APPNAME="personal"
+BUILD_APPNAME="personal"
+APPVERSION="$(__appversion "https://github.com/$SCRIPTS_PREFIX/$APPNAME/raw/$REPO_BRANCH/version.txt")"
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# Setup plugins
+PLUGIN_REPOS=""
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# Specify required system packages you can prefix os to OS_PACKAGES: MAC_OS_PACKAGES WIN_OS_PACKAGES
+OS_PACKAGES="personal "
+OS_PACKAGES+=""
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# Define required system python packages
+PYTHON_PACKAGES=""
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# Define required system perl packages
+PERL_PACKAGES=""
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# define additional packages - tries to install via tha package managers
+NODEJS=""
+PERL_CPAN=""
+RUBY_GEMS=""
+PYTHON_PIP=""
+PHP_COMPOSER=""
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# Specify ARCH_USER_REPO Pacakges
+AUR_PACKAGES=""
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# Define pre-install scripts
+__run_pre_install() {
+
+  return ${?:-0}
+}
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# run before primary post install function
+__run_prepost_install() {
+
+  return ${?:-0}
+}
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# run after primary post install function
+__run_post_install() {
+
+  return ${?:-0}
+}
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# Custom plugin function
+__custom_plugin() {
+  local exitCodeC=0
+  # execute "git_clone $repo $dir" "Installing plugin name"
+  return $exitCodeC
+}
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# Other dependencies
+dotfilesreq misc
+dotfilesreqadmin cron
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# END OF CONFIGURATION
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# Require a version higher than
+dfmgr_req_version "$APPVERSION"
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# Run pre-install commands
+execute "__run_pre_install" "Running pre-installation commands"
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# define arch user repo packages
+if_os_id arch && ARCH_USER_REPO="$AUR_PACKAGES"
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# define linux packages
+if if_os linux; then
+  if if_os_id arch; then
+    SYSTEM_PACKAGES="$OS_PACKAGES $ARCH_OS_PACKAGES"
+  elif if_os_id centos; then
+    SYSTEM_PACKAGES="$OS_PACKAGES $CENTOS_OS_PACKAGES"
+  elif if_os_id debian; then
+    SYSTEM_PACKAGES="$OS_PACKAGES $DEBIAN_OS_PACKAGES"
+  elif if_os_id ubuntu; then
+    SYSTEM_PACKAGES="$OS_PACKAGES $UBUNTU_OS_PACKAGES"
+  else
+    SYSTEM_PACKAGES="$OS_PACKAGES"
+  fi
 fi
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-clear
-sleep 1
-printf_green "Initializing the installer please wait"
-sleep 2
+# Define MacOS packages - homebrew
+if if_os mac; then
+  SYSTEM_PACKAGES="$OS_PACKAGES $MAC_OS_PACKAGES"
+fi
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-install_all_dfmgr() { dfmgr install --all || return 1; }
-install_basic_dfmgr() { dfmgr install misc bash git vim || return 1; }
-install_server_dfmgr() { dfmgr install bash git tmux vifm vim || return 1; }
-install_desktop_dfmr() { dfmgr install awesome bspwm i3 openbox qtile xfce4 xmonad || return 1; }
+# Define Windows packages - choco
+if if_os win; then
+  SYSTEM_PACKAGES="$OS_PACKAGES $WIN_OS_PACKAGES"
+fi
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-_pre_inst() {
-  if [ -z "$AUTHTOKEN" ] || [ "$AUTHTOKEN" == "YOUR_AUTH_TOKEN" ]; then
-    printf_red "AUTH Token is not set"
-    exit 1
+# install required packages using the aur - Requires yay to be installed
+install_aur "${ARCH_USER_REPO//,/ }"
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# install packages - useful for package that have the same name on all oses
+install_packages "${SYSTEM_PACKAGES//,/ }"
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# install required packages using file from pkmgr repo
+install_required "$APPNAME"
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# check for perl modules and install using system package manager
+install_perl "${PERL_PACKAGES//,/ }"
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# check for python modules and install using system package manager
+install_python "${PYTHON_PACKAGES//,/ }"
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# check for pip binaries and install using python package manager
+install_pip "${PYTHON_PIP//,/ }"
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# check for cpan binaries and install using perl package manager
+install_cpan "${PERL_CPAN//,/ }"
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# check for ruby binaries and install using ruby package manager
+install_gem "${RUBY_GEMS//,/ }"
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# check for npm binaries and install using npm/yarn package manager
+install_npm "${NODEJS//,/ }"
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# check for php binaries and install using php composer
+install_php "${PHP_COMPOSER//,/ }"
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# Ensure directories exist
+ensure_dirs
+ensure_perms
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# Backup if needed
+if [ -d "$APPDIR" ]; then
+  execute "backupapp $APPDIR $APPNAME" "Backing up $APPDIR"
+fi
+# Main progam
+if __am_i_online; then
+  if [ -d "$INSTDIR/.git" ]; then
+    execute "git_update $INSTDIR" "Updating $APPNAME configurations"
+  else
+    execute "git_clone $REPO $INSTDIR" "Installing $APPNAME configurations"
   fi
-  if [ ! -f "$(which sudo 2>/dev/null)" ] && [[ $EUID -ne 0 ]]; then
-    printf_red "Sudo is needed, however its not installed installed"
-    exit 1
-  fi
-
-  if [ ! -d "$DOTFILES"/.git ]; then rm -Rf "$DOTFILES"; fi
-  rm -Rf "$DOTTEMP" &>/dev/null
-
-  if [[ "$OSTYPE" =~ ^linux ]]; then
-    if ! cmd_exists systemmgr; then
-      if (sudo -vn && sudo -ln) 2>&1 | grep -v 'may not' >/dev/null; then
-        sudo bash -c "$(curl -LSs https://github.com/systemmgr/installer/raw/main/install.sh)"
-        sudo bash -c "$(curl -LSs https://github.com/systemmgr/installer/raw/main/install.sh)"
+  # exit on fail
+  failexitcode $? "Git has failed"
+fi
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# Install Plugins
+if __am_i_online; then
+  if [ "$PLUGIN_REPOS" != "" ]; then
+    exitCodeP=0
+    [ -d "$PLUGIN_DIR" ] || mkdir -p "$PLUGIN_DIR"
+    for plugin in $PLUGIN_REPOS; do
+      plugin_name="$(basename "$plugin")"
+      plugin_dir="$PLUGIN_DIR/$plugin_name"
+      if [ -d "$plugin_dir/.git" ]; then
+        execute "git_update $plugin_dir" "Updating plugin $plugin_name"
+        [ $? -ne 0 ] && exitCodeP=$(($? + exitCodeP)) && printf_red "Failed to update $plugin_name"
       else
-        printf_red 'please run sudo bash -c "$(curl -LSs https://github.com/systemmgr/installer/raw/main/install.sh)"'
-        exit 1
+        execute "git_clone $plugin $plugin_dir" "Installing plugin $plugin_name"
+        [ $? -ne 0 ] && exitCodeP=$(($? + exitCodeP)) && printf_red "Failed to install $plugin_name"
       fi
-    fi
+    done
   fi
-  if cmd_exists "sudoers"; then
-    sudoers nopass
-  fi
+  __custom_plugin
+  exitCodeP=$(($? + exitCodeP))
+  # exit on fail
+  failexitcode $exitCodeP "Installation of plugin failed"
+fi
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# run post install scripts
+run_postinst() {
+  __run_prepost_install
+  dfmgr_run_post
+  __run_post_install
 }
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-_git_repo_init() {
-  if [ -d "$DOTFILES"/.git ]; then
-    git -C "$DOTFILES" pull -f
-    getexitcode "repo update successfull" "Failed to pull $DOTFILES"
-  else
-    git clone "$FULL_GIT_URL" "$DOTFILES"
-    getexitcode "git clone successfull" "Failed to clone $FULL_GIT_URL"
-  fi
-  if [ -d "$DOTFILES" ]; then cp -Rf "$DOTFILES" "$DOTTEMP" &>/dev/null; fi
-}
+# run post install scripts
+execute "run_postinst" "Running post install scripts"
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-_scripts_init() {
-  for sudoconf in installer ssl; do
-    sudo systemmgr install $sudoconf
-  done
-  if [[ "$OSTYPE" =~ ^linux ]]; then
-    if [ "$1" = "--all" ]; then
-      install_all_dfmgr
-    elif [ "$1" = "--server" ]; then
-      install_server_dfmgr
-    elif [ "$1" = "--desktop" ]; then
-      install_desktop_dfmgr
-    elif [ "$1" = "" ]; then
-      install_basic_dfmgr
-    fi
-  else
-    install_basic_dfmgr
-  fi
-}
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-_files_init() {
-  GPG_TTY="$(tty)"
-  unalias cp &>/dev/null
-  find "$HOME/" -xtype l -delete &>/dev/null
-  mkdir -p "$HOME"/.ssh "$HOME"/.gnupg &>/dev/null
-  chmod -Rf 755 "$DOTTEMP"/root/skel/.local/bin/* &>/dev/null
-  find "$DOTTEMP"/root -type f -iname "*.bash" -exec chmod 755 -Rf {} \; &>/dev/null
-  find "$DOTTEMP"/root -type f -iname "*.sh" -exec chmod 755 -Rf {} \; &>/dev/null
-  find "$DOTTEMP"/root -type f -iname "*.pl" -exec chmod 755 -Rf {} \; &>/dev/null
-  find "$DOTTEMP"/root -type f -iname "*.cgi" -exec chmod 755 -Rf {} \; &>/dev/null
-  rsync -ahqk "$DOTTEMP"/root/skel/. "$HOME"/ &>/dev/null
-  if (sudo -vn && sudo -ln) 2>&1 | grep -v 'may not' >/dev/null; then
-    export GPG_TTY DOTTEMP
-    sudo rsync -ahq "$DOTTEMP"/root/skel/* /root/ &>/dev/null
-    sudo rsync -ahq "$DOTTEMP"/root/skel/* /etc/ &>/dev/null
-    sudo gpg --import "$DOTTEMP"/tmp/*.gpg 2>/dev/null
-    sudo gpg --import "$DOTTEMP"/tmp/*.sec 2>/dev/null
-    sudo gpg --import-ownertrust "$DOTTEMP"/tmp/*.trust 2>/dev/null
-  fi
-
-  # Import GPG keys
-  export GPG_TTY
-  gpg --import "$DOTTEMP"/tmp/*.gpg 2>/dev/null
-  gpg --import "$DOTTEMP"/tmp/*.sec 2>/dev/null
-  gpg --import-ownertrust "$DOTTEMP"/tmp/*.trust 2>/dev/null
-
-  # import podcast feeds
-  if cmd_exists castero; then
-    if [[ -f "$HOME"/.config/castero/podcasts.opml ]]; then
-      castero --import "$HOME"/.config/castero/podcasts.opml &>/dev/null
-    elif [[ -f "$DOTTEMP"/tmp/podcasts.opml ]]; then
-      castero --import "$DOTTEMP"/tmp/podcasts.opml &>/dev/null
-    fi
-  fi
-
-  # import rss feeds
-  if cmd_exists newsboat; then
-    if [[ -f "$HOME"/.config/newsboat/news.opml ]]; then
-      newsboat -i "$HOME"/.config/newsboat/news.opml &>/dev/null
-    elif [[ -f "$DOTTEMP"/tmp/news.opml ]]; then
-      newsboat -i "$DOTTEMP"/tmp/news.opml &>/dev/null
-    fi
-  fi
-
-  # finallize
-  find "$HOME"/.gnupg "$HOME"/.ssh -type f -exec chmod 600 {} \; &>/dev/null
-  find "$HOME"/.gnupg "$HOME"/.ssh -type d -exec chmod 700 {} \; &>/dev/null
-  chmod 755 -f "$HOME" &>/dev/null
-  rm -Rf "$HOME/.local/share/mail/*/.keep" &>/dev/null
-  rm -Rf "$TMP_FILE"
-  mkdir -p "$HOME"/{Projects,Music,Videos,Downloads,Pictures,Documents} &>/dev/null
-}
-
-main() {
-  if [ "$DOTTEMP" != "$DOTFILES" ]; then
-    if [ -d "$DOTTEMP" ]; then rm -Rf "$DOTTEMP" &>/dev/null; fi
-  fi
-  # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  printf_blue "Setting up the git repo: $GIT_REPO"
-  execute "_pre_inst" "Setting up"
-  execute "_git_repo_init" "Initializing git repo"
-  # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  printf_blue "The installer is updating the scripts"
-  execute "_scripts_init" "Installing scripts"
-  # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  printf_blue "Installing your personal files"
-  execute "_files_init" "Installing files"
-  unset __colors DOTTEMP MIN UPDATE DESKTOP
-  # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  printf_green "Installing your personal files completed"
-  # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-}
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-# finally run main function
-main "$@"
+# Output post install message
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-exit "$?"
-# end
+# create version file
+dfmgr_install_version
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# run exit function
+run_exit
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# run any external scripts
+if ! __cmd_exists "$BUILD_APPNAME" && [ -f "$INSTDIR/build.sh" ]; then
+  BUILD_SCRIPT_SRC_DIR="$PLUGIN_DIR/source"
+  BUILD_SRC_URL=""
+  export BUILD_SCRIPT_SRC_DIR BUILD_SRC_URL
+  eval "$INSTDIR/build.sh"
+  __cmd_exists $BUILD_APPNAME || printf_red "$BUILD_APPNAME is not installed: run $INSTDIR/build.sh"
+fi
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# End application
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# lets exit with code
+exit ${EXIT:-${exitCode:-0}}
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# ex: ts=2 sw=2 et filetype=sh
