@@ -3,7 +3,7 @@
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 ##@Version           :  202304292252-git
 # @@Author           :  Jason Hempstead
-# @@Contact          :  jason@casjaysdev.com
+# @@Contact          :  jason@casjaysdev.pro
 # @@License          :  LICENSE.md
 # @@ReadME           :  install.sh --help
 # @@Copyright        :  Copyright: (c) 2023 Jason Hempstead, Casjays Developments
@@ -88,7 +88,7 @@ DOTFILES_GIT_URL="$DOTFILES_GIT_PROTO$DOTFILES_GIT_TOKEN:x-oauth-basic@$DOTFILES
 #Public Repo
 #DOTFILES_GIT_URL="$DOTFILES_GIT_PROTO$DOTFILES_GIT_REPO"
 # Default NTP Server
-DOTFILES_NTP_SERVER="ntp.casjay.net"
+DOTFILES_NTP_SERVER="ntp.casjay.pro"
 # Set tmpfile
 DOTFILES_TEMP_FILE="$(mktemp /tmp/dfmpersonal-XXXXXXXXX)"
 # Set Options
